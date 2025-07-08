@@ -2,19 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Research;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Lecturer extends Model
+class Lecturer extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, Notifiable;
 
     protected $fillable = [
         'name',
-        'email',
         'nip',
         'nik',
         'prodi',
+        'username',
+        'email',
+        'password',
         'photo',
     ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    public function researches()
+    {
+        return $this->hasMany(Research::class);
+    }
 }

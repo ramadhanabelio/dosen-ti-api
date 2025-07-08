@@ -47,6 +47,23 @@
                                 @enderror
                             </div>
                             <div class="form-group mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" name="username" id="username"
+                                    class="form-control @error('username') is-invalid @enderror"
+                                    value="{{ old('username', $lecturer->username) }}">
+                                @error('username')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password" class="form-label">Password (Kosongkan jika tidak diubah)</label>
+                                <input type="password" name="password" id="password"
+                                    class="form-control @error('password') is-invalid @enderror">
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group mb-3">
                                 <label for="nip" class="form-label">Nomor Induk Pegawai</label>
                                 <input type="text" name="nip" id="nip"
                                     class="form-control @error('nip') is-invalid @enderror"

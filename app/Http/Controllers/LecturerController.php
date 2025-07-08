@@ -33,11 +33,17 @@ class LecturerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:lecturers',
-            'nip' => 'required|string|unique:lecturers',
+            'nip' => 'nullable|string|unique:lecturers',
             'nik' => 'nullable|string',
-            'prodi' => 'required|string',
+            'prodi' => 'nullable|string',
+            'username' => 'nullable|string|unique:lecturers',
+            'password' => 'nullable|string|min:6',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
+
+        if ($validated['password']) {
+            $validated['password'] = bcrypt($validated['password']);
+        }
 
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('dosen', 'public');
@@ -67,11 +73,19 @@ class LecturerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:lecturers,email,' . $lecturer->id,
-            'nip' => 'required|string|unique:lecturers,nip,' . $lecturer->id,
+            'nip' => 'nullable|string|unique:lecturers,nip,' . $lecturer->id,
             'nik' => 'nullable|string',
-            'prodi' => 'required|string',
+            'prodi' => 'nullable|string',
+            'username' => 'nullable|string|unique:lecturers,username,' . $lecturer->id,
+            'password' => 'nullable|string|min:6',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
+
+        if ($validated['password']) {
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
 
         if ($request->hasFile('photo')) {
             if ($lecturer->photo) {
